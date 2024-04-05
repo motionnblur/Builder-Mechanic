@@ -2,20 +2,18 @@ using UnityEngine;
 
 public class RaycastManager : MonoBehaviour
 {
-    private bool isMouseButtonDown = false;
+    private bool isOnCellDown = false;
     private void OnEnable()
     {
-        EventManager.AddListener("OnMouseButtonDown", OnMouseButtonDown);
-        EventManager.AddListener("OnMouseButtonUp", OnMouseButtonUp);
+        EventManager.AddListener("OnCellDown", OnCellDown);
     }
     private void OnDisable()
     {
-        EventManager.RemoveListener("OnMouseButtonDown", OnMouseButtonDown);
-        EventManager.RemoveListener("OnMouseButtonUp", OnMouseButtonUp);
+        EventManager.RemoveListener("OnCellDown", OnCellDown);
     }
     void FixedUpdate()
     {
-        if(!isMouseButtonDown) return;
+        if(!isOnCellDown) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -24,13 +22,6 @@ public class RaycastManager : MonoBehaviour
             EventManager.TriggerEvent("OnRaycastHit", hit.point);
         }
     }
-    private void OnMouseButtonDown()
-    {
-        isMouseButtonDown = true;
-    }
-    private async void OnMouseButtonUp()
-    {
-        await System.Threading.Tasks.Task.Delay(100);
-        isMouseButtonDown = false;
-    }
+
+    private void OnCellDown() => isOnCellDown = true;
 }
