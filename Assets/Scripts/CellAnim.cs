@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CellAnim : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class CellAnim : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     private Vector3 originalScale;
     private void Awake()
@@ -16,5 +16,10 @@ public class CellAnim : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = originalScale;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        EventManager.TriggerEvent("OnCellDown");
     }
 }
