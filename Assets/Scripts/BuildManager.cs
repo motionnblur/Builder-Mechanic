@@ -24,6 +24,6 @@ public class BuildManager : MonoBehaviour
     }
     private void OnMouseButtonDown()
     {
-        if(Global.pointerClickCount > 2) _lock = false;
+        if(Global.isOnCellDown) _lock = false;
     }
 }

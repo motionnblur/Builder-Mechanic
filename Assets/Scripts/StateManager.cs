@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    private bool isOnCellDownFirst = false;
+    private bool isOnCellDown = false;
     private void OnEnable()
     {
         EventManager.AddListener("OnCellDown", OnCellDown);
@@ -16,12 +16,17 @@ public class StateManager : MonoBehaviour
     }
     private void OnCellDown()
     {
-        if(Global.pointerClickCount > 2) return;
-        Global.pointerClickCount++;
+        if(!isOnCellDownFirst)
+        {
+            isOnCellDownFirst = true;
+            return;
+        }
+        isOnCellDown = true;
     }
     private void OnMouseButtonDown()
     {
-        if(Global.pointerClickCount > 2) return;
-        Global.pointerClickCount++;
+        if(isOnCellDown) return;
+
+        Global.isOnCellDown = true;
     }
 }
