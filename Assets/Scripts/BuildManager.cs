@@ -9,6 +9,7 @@ public class BuildManager : MonoBehaviour
     private bool instantiateLock = true;
     private int clickCount = 0;
     private bool isMagnetTouched = false;
+    private Vector3 magnetPoint = Vector3.zero;
     private void OnEnable()
     {
         EventManager.AddListener("OnRaycastHit", OnRaycastHit);
@@ -42,7 +43,7 @@ public class BuildManager : MonoBehaviour
 
         if(!instantiateLock)
         {
-            Instantiate(cube, hitPoint, Quaternion.identity);
+            Instantiate(cube, isMagnetTouched ? magnetPoint : hitPoint, Quaternion.identity);
             instantiateLock = true;
         }
     }
@@ -67,21 +68,42 @@ public class BuildManager : MonoBehaviour
     }
     private void OnMagnetTouched()
     {
-        isMagnetTouched = true;
-
         Vector3 obj1Pos = Global.obj1.transform.position;
         Vector3 obj2Pos = Global.obj2.transform.position;
         Vector3 dist = (obj2Pos - obj1Pos).normalized;
 
         float dot = Mathf.Abs(Vector3.Dot(dist, Global.obj1.transform.forward));
-        if(dot >= 0.95f && dot <= 1.0f){
-            Debug.Log("up-down");
-        }else if(dot >= 0f && dot <= 0.1f){
-            Debug.Log("left-right");
+        bool isLeftRight = false;
+        bool isUpDown = false;
+
+        if(obj1Pos.x > obj2Pos.x) isLeftRight = true;
+        if(obj1Pos.y > obj2Pos.y) isUpDown = true;
+        
+        if(dot >= 0.97f && dot <= 1.0f){
+            isMagnetTouched = true;
+            
+            objForHighlight.transform.position = new Vector3(
+                Global.obj1.transform.position.x,
+                objForHighlight.transform.position.y,
+                Global.obj1.transform.position.z + (isUpDown ? Global.obj1.transform.localScale.z: -Global.obj1.transform.localScale.z)
+            );
+            
+            magnetPoint = objForHighlight.transform.position;
+        }else if(dot >= 0f && dot <= 0.15f){
+            isMagnetTouched = true;
+
+            objForHighlight.transform.position = new Vector3(
+                Global.obj1.transform.position.x + (isLeftRight ? -Global.obj1.transform.localScale.x : Global.obj1.transform.localScale.x),
+                objForHighlight.transform.position.y,
+                Global.obj1.transform.position.z
+            );
+
+            magnetPoint = objForHighlight.transform.position;
         }
     }
     private void OffMagnetTouched()
     {
         isMagnetTouched = false;
+        objForHighlight.transform.position = Vector3.zero;
     }
 }
