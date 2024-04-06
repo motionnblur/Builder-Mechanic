@@ -538,6 +538,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 6179304272161550621, guid: e5914669a7070b342b59edef96e7dd4a, type: 3}
+  cubeGhost: {fileID: 6179304272161550621, guid: 738a86bfb6ea4524488c150102ba8ff4, type: 3}
+  magnet: {fileID: 4557049611490848338, guid: b7f0c2df98787504fb1fa17ea2330cb0, type: 3}
 --- !u!114 &1217938538
 MonoBehaviour:
   m_ObjectHideFlags: 0
