@@ -11,7 +11,7 @@ public class RaycastManager : MonoBehaviour
     {
         EventManager.RemoveListener("OnCellDown", OnCellDown);
     }
-    void FixedUpdate()
+    void Update()
     {
         if(!isOnCellDown) return;
 
